@@ -1,0 +1,29 @@
+{
+  "session": {
+    "sessionId": "SessionId.e2379453-dec5-40a1-8178-2f4a4045aa07",
+    "application": {
+      "applicationId": "amzn1.ask.skill.fc9f5401-c1c0-47be-87ae-55b634e391d0"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "amzn1.ask.account.AEL62RMMXX7LYAQI435EI3PN4ENFVD2WP2V2A6WCPOIOZ45FQW52FW3FKTNTKVXRKJBOLKZXLGKZB56SXATC6ZNIW6Y4AZOWI2R6LC3FUGLVNSUJ7ZCNB5UPRQSKQGFREMPNM6ODL55D6GGCWM7SN4JPXGSR2EC7KGHEJZXWPH2MSQHJ3TB7EFUNFVZACZFCWQCFPVNKVWVKLUI"
+    },
+    "new": true
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.a0ef2219-a95b-4933-9810-5555e4154487",
+    "locale": "en-US",
+    "timestamp": "2017-04-10T01:58:12Z",
+    "intent": {
+      "name": "TableTennisLookup",
+      "slots": {
+        "Player": {
+          "name": "Player",
+          "value": "Ricky"
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
