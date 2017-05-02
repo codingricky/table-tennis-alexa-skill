@@ -1,6 +1,6 @@
 {
   "session": {
-    "sessionId": "SessionId.e2379453-dec5-40a1-8178-2f4a4045aa07",
+    "sessionId": "SessionId.55db54b9-64fd-4739-908d-6b3ef1b42d20",
     "application": {
       "applicationId": "amzn1.ask.skill.fc9f5401-c1c0-47be-87ae-55b634e391d0"
     },
@@ -12,9 +12,9 @@
   },
   "request": {
     "type": "IntentRequest",
-    "requestId": "EdwRequestId.a0ef2219-a95b-4933-9810-5555e4154487",
+    "requestId": "EdwRequestId.29411eb1-64d5-4d15-af7b-c84c4644173d",
     "locale": "en-US",
-    "timestamp": "2017-04-10T01:58:12Z",
+    "timestamp": "2017-04-11T03:06:21Z",
     "intent": {
       "name": "TableTennisLookup",
       "slots": {

@@ -20,7 +20,7 @@ provider:
         - dynamodb:CreateTable
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
   environment:
-    host: ${env:HOST}
+    HOST: ${env:HOST}
     API_KEY: ${env:API_KEY}
 package:
   include:
