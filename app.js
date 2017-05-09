@@ -49,10 +49,12 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
       const options = {url: resultsUrl,
                        method: 'POST',
                        headers: {'Authorization' : 'Token ' + apiKey},
-                       form: {'winner': winner, 'loser': loser}};
+                       form: {'winner': winner, 'loser': loser}}
+      console.log(options);
       
       setTimeout(() => {
         request(options, function(err, response, body) {
+          console.log('received response');
           const json = JSON.parse(body);
           const message = json['message'];
           if (message) {
@@ -76,7 +78,7 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
         });
       }, timeout);
     }
-
+    console.log('end');
     done(errorMessageHash());
 });
 
