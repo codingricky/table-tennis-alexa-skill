@@ -54,22 +54,23 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
       
       setTimeout(() => {
         request(options, function(err, response, body) {
-          console.log('received response');
           const json = JSON.parse(body);
           const message = json['message'];
+          console.log('received response ' + body);
           if (message) {
             if (message.includes('winner')) {
-              new_attrs['winner'] = '';
+              newAttrs['winner'] = '';
               done({text: winner_prompt,
                     reprompt: winner_prompt, 
-                    attrs: new_attrs});
+                    attrs: newAttrs});
             } else if (message.includes('loser')) {
-              new_attrs['loser'] = '';
+              newAttrs['loser'] = '';
               done({text: loser_prompt,
                     reprompt: loser_prompt, 
-                    attrs: new_attrs});
+                    attrs: newAttrs});
             } else {
-              const complete = 'Result entered, ' + ' ' + message;
+              const complete = 'Results entered,' + ' ' + message;
+              console.log('completing');
               done({text: complete, end: true});  
             }
           } else {
@@ -78,8 +79,6 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
         });
       }, timeout);
     }
-    console.log('end');
-    done(errorMessageHash());
 });
 
 app.intent('TableTennisLookup', (slots, attrs, data, done) => {
