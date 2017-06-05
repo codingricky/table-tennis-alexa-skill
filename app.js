@@ -24,9 +24,7 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
         request(options, function(err, response, body) {
           const json = JSON.parse(body);
           const message = json['message'];
-          console.log('received response ' + body);
           const complete = 'Results entered,' + ' ' + message;
-          console.log('completing');
           done({text: complete, end: true});
         });
       }, timeout);
