@@ -16,7 +16,8 @@ app.onStart(() => {
 
 const host = process.env.HOST;
 const resultsUrl = host + '/api/results';
-const lookupUrl = host + '/api/player/'
+const lookupUrl = host + '/api/player/';
+const lookupQuoteUrl = host + '/api/quote/'
 const apiKey = process.env.API_KEY;
 
 
@@ -155,6 +156,22 @@ app.intent('TableTennisBestDay', (slots, attrs, data, done) => {
         });
       }, timeout);
     }
+});
+
+
+app.intent('TableTennisQuote', (slots, attrs, data, done) => {
+    const options = {url: lookupQuoteUrl,
+                     method: 'GET',
+                     headers: {'Authorization' : 'Token ' + apiKey}};
+    console.log(options);
+    setTimeout(() => {
+      request(options, function(err, response, body) {
+          console.log(response);
+          const json = JSON.parse(body);
+          const quote = json['quote'];
+          done({text: quote, end: true});  
+      });
+    }, timeout);
 });
 
 function errorMessageHash() {
