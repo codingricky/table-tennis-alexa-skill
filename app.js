@@ -25,9 +25,11 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
     console.log(slots);
     const winner = attrs.Winner || slots.Winner;
     const loser = attrs.Loser || slots.Loser;
-    const newAttrs = {Winner: winner, Loser: loser}
+    const times = attrs.Times || slots.Times;
+    const newAttrs = {Winner: winner, Loser: loser, Times: times}
 
-    if (!winner || winner.length == 0) {
+    winnerSet = winner && winner.length > 0
+    if (!winnerSet) {
       console.log('asking for winner' +  JSON.stringify(newAttrs));
       done({
         text: 'Who won the game?',
@@ -36,7 +38,8 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
       });
     }
 
-    if (!loser || loser.length == 0) {
+    loserSet = loser && loser.length > 0
+    if (!loserSet) {
       console.log('asking for loser ' +  JSON.stringify(newAttrs));
       done({
          text: 'Who lost the game?',
@@ -45,14 +48,26 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
       });
     }
 
-    if (winner && loser) {
+    winnerAndLoserSet = winnerSet && loserSet
+    timesSet = times && times > 0
+    if (winnerAndLoserSet && !timesSet) {
+      console.log('asking for times ' +  JSON.stringify(newAttrs));
+      message = 'How many times did ' + winner + ' beat ' + loser + '?';
+      done({
+         text: message,
+          reprompt: message,
+          attrs: newAttrs
+      });
+    }
+
+    if (winnerAndLoserSet && timesSet) {
       console.log('entering results in');
       const options = {url: resultsUrl,
                        method: 'POST',
                        headers: {'Authorization' : 'Token ' + apiKey},
-                       form: {'winner': winner, 'loser': loser}}
+                       form: {'winner': winner, 'loser': loser, 'times': times}}
       console.log(options);
-      
+
       setTimeout(() => {
         request(options, function(err, response, body) {
           const json = JSON.parse(body);
@@ -62,17 +77,17 @@ app.intent('TableTennis',  (slots, attrs, data, done) => {
             if (message.includes('winner')) {
               newAttrs['winner'] = '';
               done({text: winner_prompt,
-                    reprompt: winner_prompt, 
+                    reprompt: winner_prompt,
                     attrs: newAttrs});
             } else if (message.includes('loser')) {
               newAttrs['loser'] = '';
               done({text: loser_prompt,
-                    reprompt: loser_prompt, 
+                    reprompt: loser_prompt,
                     attrs: newAttrs});
             } else {
               const complete = 'Results entered,' + ' ' + message;
               console.log('completing');
-              done({text: complete, end: true});  
+              done({text: complete, end: true});
             }
           } else {
             done(errorMessageHash());
@@ -109,9 +124,9 @@ app.intent('TableTennisLookup', (slots, attrs, data, done) => {
               if (ranking === 1) {
                 message = player + ' is the best player';
               } else {
-                message = player + ' has a ranking of ' + ranking + ' and has ' + points + ' points';                
+                message = player + ' has a ranking of ' + ranking + ' and has ' + points + ' points';
               }
-              done({text: message, end: true});  
+              done({text: message, end: true});
             } else {
               done({text: player + ' not found', end: true});
             }
@@ -149,7 +164,7 @@ app.intent('TableTennisBestDay', (slots, attrs, data, done) => {
               } else {
                 message = 'The best day to play ' + player + ' is ' + day;
               }
-              done({text: message, end: true});  
+              done({text: message, end: true});
             } else {
               done({text: player + ' not found', end: true});
             }
@@ -179,6 +194,3 @@ function errorMessageHash() {
 }
 
 module.exports = app;
-
-
-

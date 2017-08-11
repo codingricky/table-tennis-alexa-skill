@@ -9,12 +9,6 @@ const host = process.env.HOST;
 const resultsPath = '/api/results';
 
 describe(tableTennisIntent, () => {
-  const attrsWithWinnerAndLoser = {
-      Winner: 'John',
-      Loser: 'Bob'
-  };
-  const validRequest = alexia.createIntentRequest(tableTennisIntent, null, attrsWithWinnerAndLoser);
-
   it('should ask for a winner', (done) => {
     const request = alexia.createIntentRequest(tableTennisIntent, null, null);
     app.handle(request, (response) => {
@@ -25,10 +19,10 @@ describe(tableTennisIntent, () => {
   });
 
   it('should ask for a loser', (done) => {
-    const attrsWithWinner = {
+    const attrs = {
         Winner: 'John'
     };
-    const request = alexia.createIntentRequest(tableTennisIntent, null, attrsWithWinner);
+    const request = alexia.createIntentRequest(tableTennisIntent, null, attrs);
     app.handle(request, (response) => {
         const responseText = response.response.outputSpeech.text;
         expect(responseText).to.equal('Who lost the game?');
@@ -36,14 +30,33 @@ describe(tableTennisIntent, () => {
       });
   });
 
+  it('should ask how many times', (done) => {
+    const attrs = {
+        Winner: 'John',
+        Loser: 'Bob'
+    };
+    const request = alexia.createIntentRequest(tableTennisIntent, null, attrs);
+    app.handle(request, (response) => {
+      const responseText = response.response.outputSpeech.text;
+      expect(responseText).to.equal('How many times did John beat Bob?');
+      done();
+    });
+  });
+
   it('should process the result', (done) => {
+    const attrs = {
+        Winner: 'John',
+        Loser: 'Bob',
+        Times: 1
+    };
+    const request = alexia.createIntentRequest(tableTennisIntent, null, attrs);
     var scope = nock(host)
         .post(resultsPath)
         .reply(200, {
             message:  "John won the match"
         });
 
-    app.handle(validRequest, (response) => {
+    app.handle(request, (response) => {
       scope.done();
       const responseText = response.response.outputSpeech.text;
       expect(responseText).to.equal('Results entered, John won the match');
